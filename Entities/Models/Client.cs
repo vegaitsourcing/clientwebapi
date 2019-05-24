@@ -8,7 +8,8 @@ namespace Entities.Models
     public class Client
     {
         [Key]
-        public Guid ClientId { get; set; }
+        [Column("ClientId")]
+        public Guid Id { get; set; }
 
         [NotMapped]
         public string ClientName
@@ -18,6 +19,10 @@ namespace Entities.Models
                 return $"{FirstName} {LastName}";
             }
         }
+
+        [Required(ErrorMessage = "Email is required")]
+        [StringLength(60, ErrorMessage = "Email can't be longer than 60 characters")]
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "First name is required")]
         [StringLength(60, ErrorMessage = "First name can't be longer than 60 characters")]

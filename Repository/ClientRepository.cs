@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Contracts;
 using Entities;
@@ -18,6 +19,12 @@ namespace Repository
         {
             return FindAll()
                 .ToList();
+        }
+
+        public Client GetClientById(Guid clientId)
+        {
+            return FindByCondition(client => client.Id.Equals(clientId))
+                .FirstOrDefault();
         }
     }
 }
