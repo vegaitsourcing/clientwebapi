@@ -24,6 +24,7 @@ namespace Repository
         public Client GetClientById(Guid clientId)
         {
             return FindByCondition(client => client.Id.Equals(clientId))
+                .DefaultIfEmpty(new Client())
                 .FirstOrDefault();
         }
     }

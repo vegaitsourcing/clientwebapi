@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ClientWebAPI.Attributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -33,7 +34,9 @@ namespace ClientWebAPI
 
             services.ConfigureRepositoryWrapper();
 
-            services.ConfigureAuthorization();
+            services.ConfigureAuthorization(Configuration);
+
+            services.AddScoped<ValidationFilterAttribute>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

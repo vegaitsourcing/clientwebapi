@@ -1,5 +1,7 @@
 ﻿using System;
+using ClientWebAPI.Attributes;
 using Contracts;
+using Entities.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,13 +43,14 @@ namespace ClientWebAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult GetClientById(Guid id)
         {
             try
             {
                 var client = _repository.Client.GetClientById(id);
 
-                if(client.Id.Equals(Guid.Empty))
+                if(client.IsEmptyObject())
                 {
                     _logger.LogError($"Client with id: {id}, hasn't been found in db.");
                     return NotFound();

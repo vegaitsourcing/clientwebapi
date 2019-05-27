@@ -53,7 +53,7 @@ namespace ClientWebAPI
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
 
-        public static void ConfigureAuthorization(this IServiceCollection services)
+        public static void ConfigureAuthorization(this IServiceCollection services, IConfiguration config)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -65,9 +65,9 @@ namespace ClientWebAPI
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = "http://localhost:5000",
-                    ValidAudience = "http://localhost:5000",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+                    ValidIssuer = config["jwt:issuer"],
+                    ValidAudience = config["jwt:audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["jwt:secretKey"]))
                 };
                 options.Events = new JwtBearerEvents()
                 {
