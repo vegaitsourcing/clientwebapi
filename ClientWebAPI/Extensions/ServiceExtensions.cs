@@ -1,4 +1,4 @@
-﻿using ClientWebAPI.Constants;
+﻿using ClientWebAPI.Model.Errors;
 using Contracts;
 using Entities;
 using LoggerService;
@@ -10,8 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Repository;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ClientWebAPI
@@ -76,9 +78,10 @@ namespace ClientWebAPI
                     {
                         context.HandleResponse();
 
-                        var response = ResponseHelper.GetErrorResponse(ErrorsDefinition.PermissionDenied, context.Request.Path.Value);
+                        var response = ResponseHelper.GetErrorResponse(new PermissionDeniedError(), context.Request.Path.Value);
                         context.Response.ContentType = "application/json";
-                        return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return context.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() } ));
                     }
                 };
             });
@@ -86,13 +89,23 @@ namespace ClientWebAPI
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new Info
+                options.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
                     Title = "ClientWebAPI",
                     Description = "Client Web API"
+                });
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                    In = "header",
+                    Name = "Authorization",
+                });
+                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                {
+                    { "Bearer", new string [] {} }
                 });
             });
         }

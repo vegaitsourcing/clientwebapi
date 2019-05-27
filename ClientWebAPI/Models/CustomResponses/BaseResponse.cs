@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace ClientWebAPI.Dto
 {
-    public abstract class Response
+    public abstract class BaseResponse
     {
+        public abstract string Message { get; }
+        public abstract int Status { get; }
         public string Uri { get; set; }
-        public virtual string Message { get; set; }
-        public virtual int Status { get; set; }
     }
 }

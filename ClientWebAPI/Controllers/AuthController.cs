@@ -29,7 +29,7 @@ namespace ClientWebAPI.Controllers
                 return BadRequest("Invalid client request");
             }
 
-            if (user.Username == "admin" && user.Password == "admin")
+            if (user.Username == _config["jwt:username"] && user.Password == _config["jwt:password"])
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["jwt:secretKey"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -43,7 +43,7 @@ namespace ClientWebAPI.Controllers
                 );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return Ok(new { Token = tokenString });
+                return Ok(tokenString);
             }
             else
             {

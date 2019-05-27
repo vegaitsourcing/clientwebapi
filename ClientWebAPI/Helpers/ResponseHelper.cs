@@ -1,15 +1,14 @@
-﻿using ClientWebAPI.Constants;
-using ClientWebAPI.Dto;
-using System;
+﻿using ClientWebAPI.Dto;
+using ClientWebAPI.Model.Errors;
 using System.Collections.Generic;
 
 namespace ClientWebAPI
 {
     public static class ResponseHelper
     {
-        public static ActionResultDto GetSuccessResponse<T>(IEnumerable<T> data, string uri)
+        public static CustomActionResult GetSuccessResponse<T>(IEnumerable<T> data, string uri)
         {
-            return new ActionResultDto
+            return new CustomActionResult
             {
                 Response = new SuccessResponse<T>
                 {
@@ -19,9 +18,9 @@ namespace ClientWebAPI
             };
         }
 
-        public static ActionResultDto GetSuccessResponse<T>(T data, string uri)
+        public static CustomActionResult GetSuccessResponse<T>(T data, string uri)
         {
-            return new ActionResultDto
+            return new CustomActionResult
             {
                 Response = new SuccessResponse<T>
                 {
@@ -31,36 +30,43 @@ namespace ClientWebAPI
             };
         }
 
-        public static ActionResultDto GetErrorResponse(int errorCode, string uri)
+        public static CustomActionResult GetErrorResponse(BaseError error, string uri)
         {
-            return new ActionResultDto
+            return new CustomActionResult
             {
                 Response = new ErrorResponse
                 {
-                    Error = new Error
+                    Error = new List<Error>
                     {
-                        Code = errorCode,
-                        Message = ErrorsDefinition.ErrorCodes[errorCode]
+                        new Error
+                        {
+                            Code = error.Code,
+                            Message = error.Message
+                        }
                     },
                     Uri = uri,
                 }
             };
         }
 
-        public static ActionResultDto GetErrorResponse(int errorCode, string uri, string parameterName)
+        public static CustomActionResult GetErrorResponse(BaseError error, string uri, string parameterName)
         {
-            return new ActionResultDto
+            return new CustomActionResult
             {
                 Response = new ErrorResponse
                 {
-                    Error = new Error
+                    Error = new List<Error>
                     {
-                        Code = errorCode,
-                        Message = string.Format(ErrorsDefinition.ErrorCodes[errorCode], parameterName)
+                        new Error
+                        {
+                            Code = error.Code,
+                            Message = error.Message
+                        }
                     },
-                    Uri = uri
+                    Uri = uri,
                 }
             };
         }
+
     }
 }

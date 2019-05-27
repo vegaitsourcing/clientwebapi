@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AutoMapper;
 using ClientWebAPI.Attributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,8 @@ namespace ClientWebAPI
             services.AddScoped<ValidationFilterAttribute>();
 
             services.ConfigureSwagger();
+
+            services.AddAutoMapper();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

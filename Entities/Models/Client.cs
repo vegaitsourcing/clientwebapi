@@ -11,14 +11,9 @@ namespace Entities.Models
         [Column("ClientId")]
         public Guid Id { get; set; }
 
-        [NotMapped]
-        public string ClientName
-        {
-            get
-            {
-                return $"{FirstName} {LastName}";
-            }
-        }
+        [Required(ErrorMessage = "Client name is required")]
+        [StringLength(60, ErrorMessage = "Client name can't be longer than 60 characters")]
+        public string ClientName { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [StringLength(60, ErrorMessage = "Email can't be longer than 60 characters")]

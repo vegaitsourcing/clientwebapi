@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using AutoMapper;
 using ClientWebAPI.Attributes;
+using ClientWebAPI.Model.Dto;
 using Contracts;
 using Entities.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -13,13 +17,15 @@ namespace ClientWebAPI.Controllers
     [Authorize]
     public class ClientController : ControllerBase
     {
-        private ILoggerManager _logger;
-        private IRepositoryWrapper _repository;
+        private readonly ILoggerManager _logger;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _autoMapper;
 
-        public ClientController(ILoggerManager logger, IRepositoryWrapper repository)
+        public ClientController(ILoggerManager logger, IRepositoryWrapper repository, IMapper autoMapper)
         {
             _logger = logger;
             _repository = repository;
+            _autoMapper = autoMapper;
         }
 
         [HttpGet]
@@ -28,10 +34,12 @@ namespace ClientWebAPI.Controllers
             try
             {
                 var clients = _repository.Client.GetAllClients();
+        
+                var clientsDto = _autoMapper.Map<IEnumerable<ClientDto>>(clients);
 
                 _logger.LogInfo("${Returned all clients from database}");
 
-                var response = ResponseHelper.GetSuccessResponse(clients, HttpContext.Request.Path.Value);
+                var response = ResponseHelper.GetSuccessResponse(clientsDto, HttpContext.Request.Path.Value);
 
                 return Ok(response);
             }
@@ -50,6 +58,8 @@ namespace ClientWebAPI.Controllers
             {
                 var client = _repository.Client.GetClientById(id);
 
+                var clientDto = _autoMapper.Map<ClientDto>(client);
+
                 if(client.IsEmptyObject())
                 {
                     _logger.LogError($"Client with id: {id}, hasn't been found in db.");
@@ -59,7 +69,7 @@ namespace ClientWebAPI.Controllers
                 {
                     _logger.LogInfo($"Returned client for id: {id}");
 
-                    var response = ResponseHelper.GetSuccessResponse(client, HttpContext.Request.Path.Value);
+                    var response = ResponseHelper.GetSuccessResponse(clientDto, HttpContext.Request.Path.Value);
 
                     return Ok(response);
                 }

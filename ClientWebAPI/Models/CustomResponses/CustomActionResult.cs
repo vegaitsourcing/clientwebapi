@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ClientWebAPI.Dto
 {
-    public class ActionResultDto 
+    public class CustomActionResult 
     {
-        public Response Response { get; set; }
+        public BaseResponse Response { get; set; }
     }
 }
