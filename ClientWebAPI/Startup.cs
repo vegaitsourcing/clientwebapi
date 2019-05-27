@@ -38,6 +38,8 @@ namespace ClientWebAPI
 
             services.AddScoped<ValidationFilterAttribute>();
 
+            services.ConfigureSwagger();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -65,6 +67,13 @@ namespace ClientWebAPI
             });
 
             app.UseStaticFiles();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClientWebAPI");
+            });
 
             app.UseMvc();
         }

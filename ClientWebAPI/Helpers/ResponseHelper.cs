@@ -62,10 +62,5 @@ namespace ClientWebAPI
                 }
             };
         }
-
-        internal static string GetErrorResponse(object errorCodes)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

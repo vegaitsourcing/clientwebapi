@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Repository;
+using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
 
 namespace ClientWebAPI
@@ -80,6 +81,19 @@ namespace ClientWebAPI
                         return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
                     }
                 };
+            });
+        }
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "ClientWebAPI",
+                    Description = "Client Web API"
+                });
             });
         }
     }
