@@ -7,8 +7,8 @@ namespace ClientWebAPI.Dto
 {
     public class ErrorResponse : Response
     {
-        public override string Message => "Data fetched successfully";
-        public override int Status => 0;
+        public override string Message => "Error in fetching data";
+        public override int Status => 1;
         public Error Error { get; set; }
     }
 }

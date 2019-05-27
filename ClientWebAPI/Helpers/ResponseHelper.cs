@@ -2,8 +2,6 @@
 using ClientWebAPI.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClientWebAPI
 {
@@ -43,9 +41,31 @@ namespace ClientWebAPI
                     {
                         Code = errorCode,
                         Message = ErrorsDefinition.ErrorCodes[errorCode]
-                    }
+                    },
+                    Uri = uri,
                 }
             };
+        }
+
+        public static ActionResultDto GetErrorResponse(int errorCode, string uri, string parameterName)
+        {
+            return new ActionResultDto
+            {
+                Response = new ErrorResponse
+                {
+                    Error = new Error
+                    {
+                        Code = errorCode,
+                        Message = string.Format(ErrorsDefinition.ErrorCodes[errorCode], parameterName)
+                    },
+                    Uri = uri
+                }
+            };
+        }
+
+        internal static string GetErrorResponse(object errorCodes)
+        {
+            throw new NotImplementedException();
         }
     }
 }

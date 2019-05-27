@@ -1,5 +1,6 @@
 ﻿using System;
 using Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace ClientWebAPI.Controllers
 {
     [Route("api/client")]
     [ApiController]
+    [Authorize]
     public class ClientController : ControllerBase
     {
         private ILoggerManager _logger;

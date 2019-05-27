@@ -1,11 +1,17 @@
-﻿using Contracts;
+﻿using ClientWebAPI.Constants;
+using Contracts;
 using Entities;
 using LoggerService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Repository;
+using System.Text;
 
 namespace ClientWebAPI
 {
@@ -45,6 +51,36 @@ namespace ClientWebAPI
         public static void ConfigureRepositoryWrapper(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+        }
+
+        public static void ConfigureAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = "http://localhost:5000",
+                    ValidAudience = "http://localhost:5000",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+                };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+
+                        var response = ResponseHelper.GetErrorResponse(ErrorsDefinition.PermissionDenied, context.Request.Path.Value);
+                        context.Response.ContentType = "application/json";
+                        return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                    }
+                };
+            });
         }
     }
 }
