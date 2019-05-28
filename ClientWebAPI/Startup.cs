@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using AutoMapper;
-using ClientWebAPI.Attributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -36,8 +35,6 @@ namespace ClientWebAPI
             services.ConfigureRepositoryWrapper();
 
             services.ConfigureAuthorization(Configuration);
-
-            services.AddScoped<ValidationFilterAttribute>();
 
             services.ConfigureSwagger();
 

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using AutoMapper;
-using ClientWebAPI.Attributes;
 using ClientWebAPI.Model.Dto;
 using Contracts;
 using Entities.Extensions;
@@ -51,7 +49,6 @@ namespace ClientWebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult GetClientById(Guid id)
         {
             try
