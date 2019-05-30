@@ -8,7 +8,3 @@ The data is stored in MySQL database.
 Authorization type: JWT
 
 Application is hosted on the Google App Engine.
-
-Host URL: https://survi-clientswebapi.appspot.com
-
-API specification (Swagger UI): https://survi-clientswebapi.appspot.com/swagger
