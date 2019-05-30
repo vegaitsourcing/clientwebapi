@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Repository;
+using Services;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;
 using System.Text;
@@ -87,6 +88,8 @@ namespace ClientWebAPI
                     }
                 };
             });
+
+            services.AddScoped<IAuthenticationManager, CustomAuthenticationManager>();
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -110,11 +113,6 @@ namespace ClientWebAPI
                     { "Bearer", new string [] {} }
                 });
             });
-        }
-
-        public static void ConfigurePasswordHasher(IConfiguration configuration)
-        {
-            var hasher = new PasswordHasher<Client>();
         }
     }
 }

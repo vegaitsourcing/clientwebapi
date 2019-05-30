@@ -7,6 +7,7 @@ namespace Contracts
     public interface IRepositoryWrapper
     {
         IClientRepository Client { get; }
+        IUserRepository User { get; }
         void Save();
     }
 }

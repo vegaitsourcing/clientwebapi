@@ -7,6 +7,7 @@ using ClientWebAPI.Models.Dto;
 using Contracts;
 using Entities.Extensions;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ namespace ClientWebAPI.Controllers
 {
     [Route("api/client")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ClientController : ControllerBase
     {
         private readonly ILoggerManager _logger;

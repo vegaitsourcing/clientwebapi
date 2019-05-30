@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ClientWebAPI.Model;
+using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -15,10 +16,12 @@ namespace ClientWebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
+        private readonly IAuthenticationManager _authenticationManager;
 
-        public AuthController(IConfiguration config)
+        public AuthController(IConfiguration config, IAuthenticationManager authenticationManager)
         {
             _config = config;
+            _authenticationManager = authenticationManager;
         }
 
         [HttpPost, Route("login")]
@@ -29,7 +32,8 @@ namespace ClientWebAPI.Controllers
                 return BadRequest("Invalid client request");
             }
 
-            if (user.Username == _config["jwt:username"] && user.Password == _config["jwt:password"])
+            //if (user.Username == _config["jwt:username"] && user.Password == _config["jwt:password"])
+            if(_authenticationManager.Authenticate(user.Username, user.Password))
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["jwt:secretKey"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);

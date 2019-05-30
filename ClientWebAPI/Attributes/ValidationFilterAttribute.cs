@@ -3,7 +3,6 @@ using ClientWebAPI.Model.Errors;
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,7 +50,6 @@ namespace ClientWebAPI.Attributes
         private void ValidateDto(ActionExecutingContext context, List<BaseError> errors)
         {
             var dto = context.ActionArguments.SingleOrDefault(d => d.Value is IValidationDto).Value;
-
             if (dto == null)
             {
                 context.Result = new BadRequestObjectResult("Object is null");
@@ -59,7 +57,6 @@ namespace ClientWebAPI.Attributes
             }
 
             var keys = context.ModelState.Keys.Where(k => !string.IsNullOrEmpty(k) && !k.Equals("id"));
-
             foreach (var key in keys)
             {
                 var property = dto.GetType().GetProperty(key);

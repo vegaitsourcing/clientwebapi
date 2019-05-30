@@ -2,6 +2,7 @@
 using System.IO;
 using AutoMapper;
 using ClientWebAPI.Attributes;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
