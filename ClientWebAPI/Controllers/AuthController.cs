@@ -32,7 +32,6 @@ namespace ClientWebAPI.Controllers
                 return BadRequest("Invalid client request");
             }
 
-            //if (user.Username == _config["jwt:username"] && user.Password == _config["jwt:password"])
             if(_authenticationManager.Authenticate(user.Username, user.Password))
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["jwt:secretKey"]));
