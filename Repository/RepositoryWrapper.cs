@@ -12,7 +12,8 @@ namespace Repository
             _repoContext = repositoryContext;
         }
 
-        public IClientRepository _client;
+        private IClientRepository _client;
+        private IUserRepository _user;
 
         public IClientRepository Client
         {
@@ -24,6 +25,19 @@ namespace Repository
                 }
 
                 return _client;
+            }
+        }
+
+        public IUserRepository User
+        {
+            get
+            {
+                if (_user == null)
+                {
+                    _user = new UserRepository(_repoContext);
+                }
+
+                return _user;
             }
         }
 
