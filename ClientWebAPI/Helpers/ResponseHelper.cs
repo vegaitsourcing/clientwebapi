@@ -6,64 +6,54 @@ namespace ClientWebAPI
 {
     public static class ResponseHelper
     {
-        public static CustomActionResult GetSuccessResponse<T>(IEnumerable<T> data, string uri)
+        public static CustomActionResult GetSuccessResponse<T>(IEnumerable<T> data, string uri, string message)
         {
             return new CustomActionResult
             {
                 Response = new SuccessResponse<T>
                 {
                     Result = data,
-                    Uri = uri
+                    Uri = uri,
+                    Message = message
                 }
             };
         }
 
-        public static CustomActionResult GetSuccessResponse<T>(T data, string uri)
+        public static CustomActionResult GetSuccessResponse<T>(T data, string uri, string message)
         {
             return new CustomActionResult
             {
                 Response = new SuccessResponse<T>
                 {
                     Result = new List<T> { data },
-                    Uri = uri
+                    Uri = uri,
+                    Message = message,
                 }
             };
         }
 
-        public static CustomActionResult GetErrorResponse(BaseError error, string uri)
+        public static CustomActionResult GetErrorResponse(BaseError error, string uri, string message)
         {
             return new CustomActionResult
             {
                 Response = new ErrorResponse
                 {
-                    Error = new List<Error>
-                    {
-                        new Error
-                        {
-                            Code = error.Code,
-                            Message = error.Message
-                        }
-                    },
+                    Errors = new List<BaseError> { error },
                     Uri = uri,
+                    Message = message,
                 }
             };
         }
 
-        public static CustomActionResult GetErrorResponse(BaseError error, string uri, string parameterName)
+        public static CustomActionResult GetErrorResponse(IEnumerable<BaseError> errors, string uri, string message)
         {
             return new CustomActionResult
             {
                 Response = new ErrorResponse
                 {
-                    Error = new List<Error>
-                    {
-                        new Error
-                        {
-                            Code = error.Code,
-                            Message = error.Message
-                        }
-                    },
+                    Errors = errors,
                     Uri = uri,
+                    Message = message,
                 }
             };
         }

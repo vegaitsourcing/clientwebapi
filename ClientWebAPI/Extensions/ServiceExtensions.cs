@@ -1,10 +1,12 @@
 ﻿using ClientWebAPI.Model.Errors;
 using Contracts;
 using Entities;
+using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -78,7 +80,7 @@ namespace ClientWebAPI
                     {
                         context.HandleResponse();
 
-                        var response = ResponseHelper.GetErrorResponse(new PermissionDeniedError(), context.Request.Path.Value);
+                        var response = ResponseHelper.GetErrorResponse(new PermissionDeniedError(), context.Request.Path.Value, "Error in fetching data");
                         context.Response.ContentType = "application/json";
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         return context.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() } ));
@@ -108,6 +110,11 @@ namespace ClientWebAPI
                     { "Bearer", new string [] {} }
                 });
             });
+        }
+
+        public static void ConfigurePasswordHasher(IConfiguration configuration)
+        {
+            var hasher = new PasswordHasher<Client>();
         }
     }
 }

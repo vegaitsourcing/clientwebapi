@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using ClientWebAPI.Model.Dto;
+using ClientWebAPI.Models.Dto;
 using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClientWebAPI.AutomapperProfiles
 {
@@ -13,6 +10,8 @@ namespace ClientWebAPI.AutomapperProfiles
         public ClientProfile()
         {
             CreateMap<Client, ClientDto>();
+            CreateMap<ClientDtoForCreation, Client>();
+            CreateMap<ClientDtoForUpdate, Client>();
         }
     }
 }

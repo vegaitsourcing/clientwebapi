@@ -7,7 +7,7 @@ namespace ClientWebAPI.Dto
 {
     public abstract class BaseResponse
     {
-        public abstract string Message { get; }
+        public abstract string Message { get; set; }
         public abstract int Status { get; }
         public string Uri { get; set; }
     }

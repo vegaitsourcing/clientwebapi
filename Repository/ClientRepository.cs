@@ -27,5 +27,21 @@ namespace Repository
                 .DefaultIfEmpty(new Client())
                 .FirstOrDefault();
         }
+
+        public void CreateClient(Client client)
+        {
+            client.Id = Guid.NewGuid();
+            Create(client);
+        }
+
+        public void UpdateClient(Client dbClient)
+        {
+            Update(dbClient);
+        }
+
+        public void DeleteClient(Client client)
+        {
+            Delete(client);
+        }
     }
 }

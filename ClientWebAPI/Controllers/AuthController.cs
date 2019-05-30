@@ -22,7 +22,7 @@ namespace ClientWebAPI.Controllers
         }
 
         [HttpPost, Route("login")]
-        public IActionResult Login([FromBody]LoginModel user)
+        public IActionResult Login([FromBody]LoginDto user)
         {
             if (user == null)
             {

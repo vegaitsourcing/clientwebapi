@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using AutoMapper;
+using ClientWebAPI.Attributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -39,6 +40,13 @@ namespace ClientWebAPI
             services.ConfigureSwagger();
 
             services.AddAutoMapper();
+
+            services.AddScoped<ValidationFilterAttribute>();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

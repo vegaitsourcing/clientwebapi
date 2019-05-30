@@ -9,6 +9,9 @@ namespace Contracts
     {
         IEnumerable<Client> GetAllClients();
         Client GetClientById(Guid id);
+        void CreateClient(Client client);
+        void UpdateClient(Client dbClient);
+        void DeleteClient(Client client);
     }
 
     
